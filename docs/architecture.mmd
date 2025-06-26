@@ -1,0 +1,56 @@
+flowchart TD
+  subgraph Cloudflare Workers
+    AuthWorker["Auth/User Worker (Password & Passkey)"]
+    EventWorker["Event Worker"]
+    LocationWorker["Location Worker"]
+    CrewWorker["Crew Worker"]
+    DistanceWorker["Distance Worker"]
+    TimingWorker["Timing Worker"]
+    PenaltyWorker["Penalty Worker"]
+    FinanceWorker["Finance Worker"]
+    ResultsWorker["Results Worker"]
+    StaticRenderer["Static Renderer Worker"]
+  end
+
+  subgraph Storage
+    D1[("D1 Database")]
+    R2[("R2 (Static Pages/API)")]
+  end
+
+  subgraph Frontend
+    SvelteApp["Svelte App (Public & Authenticated UI)"]
+  end
+
+  subgraph External
+    EmailService["Configurable Email Service"]
+    User["User (Admin, Judge, etc.)"]
+    PublicUser["Public User"]
+  end
+
+  User <--> SvelteApp
+  PublicUser <--> SvelteApp
+  SvelteApp <--> AuthWorker
+  SvelteApp <--> EventWorker
+  SvelteApp <--> LocationWorker
+  SvelteApp <--> CrewWorker
+  SvelteApp <--> DistanceWorker
+  SvelteApp <--> TimingWorker
+  SvelteApp <--> PenaltyWorker
+  SvelteApp <--> FinanceWorker
+  SvelteApp <--> ResultsWorker
+  SvelteApp <--> StaticRenderer
+
+  AuthWorker <--> D1
+  EventWorker <--> D1
+  LocationWorker <--> D1
+  CrewWorker <--> D1
+  DistanceWorker <--> D1
+  TimingWorker <--> D1
+  PenaltyWorker <--> D1
+  FinanceWorker <--> D1
+  ResultsWorker <--> D1
+  StaticRenderer <--> D1
+  StaticRenderer <--> R2
+  SvelteApp <--> R2
+
+  AuthWorker <--> EmailService 

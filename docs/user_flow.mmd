@@ -1,0 +1,28 @@
+sequenceDiagram
+  participant Admin as Super Admin
+  participant User as Invited User
+  participant Auth as Auth Worker
+  participant Email as Email Service
+  participant Svelte as Svelte App
+  participant D1 as D1 Database
+
+  Admin->>Auth: Invite user (email, role, event)
+  Auth->>Email: Send invitation email
+  Email->>User: Receive invitation link
+  User->>Svelte: Open invitation link
+  Svelte->>Auth: Register account (set password or passkey)
+  Auth->>D1: Create user, link to event/role
+  Auth-->>User: Registration success
+
+  User->>Svelte: Login (password or passkey)
+  Svelte->>Auth: Authenticate (password or passkey)
+  Auth->>D1: Validate credentials
+  Auth-->>User: JWT/session
+
+  User->>Svelte: Access event features (role-based)
+  Svelte->>Various Workers: Perform actions (CRUD)
+  Various Workers->>D1: Read/write data
+  Svelte->>ResultsWorker: View results
+  ResultsWorker->>D1: Fetch results
+  ResultsWorker-->>Svelte: Results data
+  Svelte-->>User: Display results (dynamically updated) 

@@ -1,0 +1,4 @@
+packages:
+  - 'timekeeper-frontend'
+  - 'timekeeper-backend/workers/*'
+  - 'timekeeper-backend/shared' 
